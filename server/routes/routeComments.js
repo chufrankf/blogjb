@@ -18,7 +18,7 @@ router.put('/:id', (req, res, next) => {
   comment.updatedAt = Date.now();
   comment.author = req.user;
 
-  comments.updateComment(req.params.id, req.body, req.user, (error, data) => {
+  comments.updateComment(req.params.id, req.body, (error, data) => {
     if (error) next(error);
     else res.json(data);
   });

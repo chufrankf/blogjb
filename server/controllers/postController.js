@@ -3,14 +3,14 @@ const Posts = require('../models/postModel');
 function getPost(id, callback) {
   return Posts
     .findById(id)
-    .populate('Comment')
+    .populate('comments')
     .exec(callback);
 }
 
 function getPosts(callback) {
   return Posts
     .find({})
-    .populate('Comment')
+    .populate('comments')
     .exec(callback);
 }
 
@@ -25,7 +25,7 @@ function createPost(body, callback) {
     .create(body, callback);
 }
 
-function updatePost(id, body, user, callback) {
+function updatePost(id, body, callback) {
   return Posts
     .updateOne({ _id: id }, body, { runValidators: true }, callback);
 }

@@ -1,17 +1,26 @@
 const express = require('express');
-const next = require('next');
+const nextjs = require('next');
 const mongoose = require('mongoose');
 const swaggerUi = require('swagger-ui-express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const config = require('./config');
 const apiRoutes = require('./routes');
 const swaggerDocument = require('./swagger.json');
 const logger = require('./helpers/logger');
 
-
 // Setup Express
 const server = express();
 
+// TODO: Remove when connected to authentication
+server.use('/', (req, res, next) => {
+  req.user = 'tempuser';
+  next();
+});
+
 // Setup API routes
+server.use(bodyParser.json());
+server.use(cors());
 server.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 server.use('/api', apiRoutes);
 
@@ -23,7 +32,7 @@ db.once('open', () => logger.info(`Successfully connected to ${config.mongo.url}
 
 // Setup Next
 const dev = config.env !== 'production';
-const app = next({ dev });
+const app = nextjs({ dev });
 const handle = app.getRequestHandler();
 
 app.prepare().then(() => {

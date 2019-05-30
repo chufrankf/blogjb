@@ -1,9 +1,9 @@
 {
   "swagger": "2.0",
   "info": {
+    "description": "Basic blog api for creating posts and comments. Used alongside AuthJB for authenticating and managing users",
     "version": "1.0.0",
-    "title": "Blog Jibaga Application",
-    "description": "Blog API for creating posts and comments",
+    "title": "BlogJB",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
@@ -11,13 +11,340 @@
   },
   "host": "localhost:9001",
   "basePath": "/api",
+  "tags": [
+    {
+      "name": "Posts",
+      "description": "Basic CRUD endpoints for managing and viewing users posts"
+    },
+    {
+      "name": "Comments",
+      "description": "Endpoints for creating and managing comments"
+    }
+  ],
   "schemes": [
     "http"
   ],
   "consumes": [
     "application/json"
   ],
-  "produces": [
-    "application/json"
-  ]
+  "paths": {
+    "/post": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Get all posts in the system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Create a new post",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Post that you will like to be created",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "Title of the post"
+                },
+                "content": {
+                  "type": "string",
+                  "description": "Text in the post"
+                },
+                "visibility": {
+                  "type": "string",
+                  "description": "Parties that the post will be visible to",
+                  "default": "Private",
+                  "enum": [
+                    "Public",
+                    "Friends",
+                    "Private"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post successfully created"
+          }
+        }
+      }
+    },
+    "/post/{postId}": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Get a single post in the system by id",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "The ID of the post to get."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Updates a single post in the system by id",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the post to get.",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Post that you will like to be created",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "Title of the post"
+                },
+                "content": {
+                  "type": "string",
+                  "description": "Text in the post"
+                },
+                "visibility": {
+                  "type": "string",
+                  "description": "Parties that the post will be visible to",
+                  "default": "Private",
+                  "enum": [
+                    "Public",
+                    "Friends",
+                    "Private"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update successfull"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Deletes a single post in the system by id",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the post to get.",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post successfully deleted"
+          }
+        }
+      }
+    },
+    "/comment/post/{postId}": {
+      "post": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "Add a new comment to a given postId",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the post to get.",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Comment that you will like to be created",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "string",
+                  "description": "Text in the comment"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post successfully created"
+          }
+        }
+      }
+    },
+    "/comment/{commentId}": {
+      "put": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "Update an existing comment given a commentId",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the comment to get.",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Details for the comment you'd like to change",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "string",
+                  "description": "Text in the comment"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update successfull"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "Delete an existing comment by commentId",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the comment to get.",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete successfull"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Post": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "MongoDB document Id"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the post"
+        },
+        "author": {
+          "type": "string",
+          "description": "Creator of the post"
+        },
+        "content": {
+          "type": "string",
+          "description": "Text in the post"
+        },
+        "visibility": {
+          "type": "string",
+          "description": "Parties that the post will be visible to",
+          "enum": [
+            "Public",
+            "Friends",
+            "Private"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The time that the post was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The time that the post was updated, null if not changed"
+        },
+        "comments": {
+          "$ref": "#/definitions/Comment"
+        }
+      }
+    },
+    "Comment": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "MongoDB document Id (only in output)"
+        },
+        "author": {
+          "type": "string",
+          "description": "Creator of the comment"
+        },
+        "content": {
+          "type": "string",
+          "description": "Text in the comment"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The time that the comment was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The time that the comment was updated, null if not changed"
+        }
+      }
+    }
+  }
 }

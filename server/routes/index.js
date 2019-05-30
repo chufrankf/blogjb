@@ -20,6 +20,6 @@ router.use((err, req, res, next) => {
 
 // Attach endpoints
 router.use('/post', routePosts);
-router.use('/comments', routeComments);
+router.use('/comment', routeComments);
 
 module.exports = router;
