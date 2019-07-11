@@ -6,5 +6,8 @@
     "node": true
   },
   "parser": "babel-eslint",
-  "plugins": ["react", "jsx-a11y", "import"]
+  "plugins": ["react", "jsx-a11y", "import"],
+  "rules": {
+    "react/require-default-props": 0
+  }
 }

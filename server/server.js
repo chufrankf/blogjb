@@ -36,6 +36,7 @@ const app = nextjs({ dev });
 const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
+  server.get('/newpost', (req, res) => app.render(req, res, '/newpost'));
   server.get('*', (req, res) => handle(req, res));
 
   server.listen(9001, (error) => {
