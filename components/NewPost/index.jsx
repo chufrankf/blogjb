@@ -16,7 +16,7 @@ export default class NewPost extends Component {
     const { title, body, visibility } = this.state;
 
     // TODO: set loading on before fetch, then off after
-    fetch('http://localhost:9001/api/post/', {
+    fetch('/api/post/', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
